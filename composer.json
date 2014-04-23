@@ -1,9 +1,7 @@
 {
     "name": "arcturial/builder",
     "require": {
-        "php": ">=5.3.3",
-        "symfony/dom-crawler": "*",
-        "symfony/css-selector": "*"
+        "php": ">=5.3.3"
     },
     "autoload": {
         "psr-0": {

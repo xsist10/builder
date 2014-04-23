@@ -27,8 +27,8 @@ class HelpText extends Proxy
         // Figure out if we are nested in a container
         if (!($this->resolveProxy() instanceof Container)) {
             // Replace the proxy element
-            $div = new PhantomContainer();
-            $this->element = $div->nest($this->getElement());
+            $div = new Div();
+            $this->setElement($div->nest($this->getElement()));
         }
 
         // Nest the paragraph

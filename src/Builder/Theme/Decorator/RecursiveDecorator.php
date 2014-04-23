@@ -21,7 +21,7 @@ abstract class RecursiveDecorator implements DecoratorInterface
 
         // Unwrap any proxies
         if ($element instanceof Proxy) {
-            $element = $this->invokeTransformer($element->getElement());
+            $element = $element->getElement();
         }
 
         return $element;

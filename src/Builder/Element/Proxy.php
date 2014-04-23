@@ -6,13 +6,19 @@ use Builder\Element\ElementInterface;
 
 abstract class Proxy extends Element
 {
-    protected $element;
+    private $element;
 
-    public function __construct(Element $element)
+    public function __construct(ElementInterface $element)
     {
         // Check if element is supported
         $this->supported($element);
         $this->element = $element;
+    }
+
+    protected function setElement(ElementInterface $element)
+    {
+        $this->element = $element;
+        return $this;
     }
 
     public function supported(ElementInterface $element)

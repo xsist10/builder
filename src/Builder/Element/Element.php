@@ -21,6 +21,12 @@ abstract class Element implements ElementInterface
         return $this;
     }
 
+    public function clearAttributes()
+    {
+        $this->attributes = array();
+        return $this;
+    }
+
     public function removeAttribute($key)
     {
         unset($this->attributes[$key]);
@@ -30,6 +36,7 @@ abstract class Element implements ElementInterface
     public function transferAttributes(Element $element)
     {
         $this->setAttributes($element->getAttributes());
+        $element->clearAttributes();
         return $this;
     }
 

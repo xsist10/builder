@@ -28,6 +28,13 @@ abstract class Container extends Element implements ContainerInterface
         return $this;
     }
 
+    public function unwrap()
+    {
+        $container = new PhantomContainer();
+        $container->setNested($this->getNested());
+        return $container;
+    }
+
     public function renderNested()
     {
         $return = "";
