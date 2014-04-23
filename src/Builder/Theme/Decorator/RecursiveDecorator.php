@@ -39,7 +39,14 @@ abstract class RecursiveDecorator implements DecoratorInterface
 
             $element = $this->invokeTransformer($element->setNested($temp));
         } else {
+
+            // Do infinite recursion until no objects are unwrapped anymore
+            $before = $element;
             $element = $this->invokeTransformer($element);
+
+            if ($element != $before) {
+                $element = $this->recurse($element);
+            }
         }
 
         return $element;
@@ -53,6 +60,6 @@ abstract class RecursiveDecorator implements DecoratorInterface
 
     public function decorate(ElementInterface $element)
     {
-        return $this->recurse($element)->render();
+        return $this->recurse($element);
     }
 }

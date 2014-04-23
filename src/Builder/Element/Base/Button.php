@@ -1,33 +1,32 @@
 <?php
 namespace Builder\Element\Base;
 
-use Builder\Element\Container;
+use Builder\Element\Element;
 use Builder\Element\Base\Literal;
 
-abstract class Button extends Container
+abstract class Button extends Element
 {
+    private $text;
+
     public function __construct($text)
     {
-        $this->literal = new Literal();
         $this->setText($text);
-
-        $this->nest($this->literal);
     }
 
     public function setText($text)
     {
-        $this->literal->setText($text);
+        $this->text = $text;
     }
 
     public function getText()
     {
-        return $this->literal->getText();
+        return $this->text;
     }
 
     public function render()
     {
         return '<button' . $this->renderAttributes() . '>'
-            . $this->renderNested()
+            . $this->text
             . '</button>' . PHP_EOL;
     }
 }

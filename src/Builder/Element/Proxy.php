@@ -2,20 +2,39 @@
 namespace Builder\Element;
 
 use Builder\Element\Element;
-use Builder\Element\ProxyInterface;
+use Builder\Element\ElementInterface;
 
 abstract class Proxy extends Element
 {
-    private $element;
+    protected $element;
 
     public function __construct(Element $element)
     {
+        // Check if element is supported
+        $this->supported($element);
         $this->element = $element;
+    }
+
+    public function supported(ElementInterface $element)
+    {
+        // By default we want to use attributes
+        if (!($element instanceof Element)) {
+            throw new \Exception('unsupported type');
+        }
     }
 
     public function getElement()
     {
         return $this->element;
+    }
+
+    public function resolveProxy()
+    {
+        if ($this->element instanceof Proxy) {
+            return $this->element->resolveProxy();
+        } else {
+            return $this->element;
+        }
     }
 
     public function removeAttribute($key)
@@ -53,7 +72,7 @@ abstract class Proxy extends Element
         return $this->getElement()->renderAttributes();
     }
 
-    public function render()
+    final public function render()
     {
         return $this->element->render();
     }

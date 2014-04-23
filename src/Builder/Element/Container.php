@@ -22,12 +22,17 @@ abstract class Container extends Element implements ContainerInterface
         return $this;
     }
 
+    public function clear()
+    {
+        $this->nested = array();
+        return $this;
+    }
+
     public function renderNested()
     {
         $return = "";
 
-        foreach ($this->getNested() as $nested)
-        {
+        foreach ($this->getNested() as $nested) {
             $return .= $nested->render();
         }
 

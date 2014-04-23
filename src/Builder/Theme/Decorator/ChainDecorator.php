@@ -1,7 +1,7 @@
 <?php
 namespace Builder\Theme\Decorator;
 
-use Builder\Decorator\DecoratorInterface;
+use Builder\Theme\DecoratorInterface;
 use Builder\Element\ElementInterface;
 
 class ChainDecorator implements DecoratorInterface

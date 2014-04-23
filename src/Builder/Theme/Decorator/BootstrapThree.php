@@ -8,7 +8,9 @@ use Builder\Element\Base\Form;
 use Builder\Element\Base\Button;
 use Builder\Element\Base\Italic;
 use Builder\Element\Composite\InputField;
+
 use Builder\Element\Proxy\Example;
+use Builder\Element\Proxy\HelpText;
 
 class BootstrapThree extends RecursiveDecorator
 {
@@ -23,6 +25,7 @@ class BootstrapThree extends RecursiveDecorator
 
         // Proxy elements (override)
         $this->transform('Builder\Element\Proxy\Example', array($this, 'transformExample'));
+        $this->transform('Builder\Element\Proxy\HelpText', array($this, 'transformHelpText'));
     }
 
     public function transformForm(Form $form)
@@ -37,10 +40,6 @@ class BootstrapThree extends RecursiveDecorator
         $textField
             ->getInputText()
             ->appendAttribute('class', 'form-control');
-
-        $textField
-            ->getHelpText()
-            ->appendAttribute('class', 'help-block');
 
         $div = new Div();
         $div->transferAttributes($textField)
@@ -60,5 +59,11 @@ class BootstrapThree extends RecursiveDecorator
     {
         $example->removeAttribute('data-example');
         return $example;
+    }
+
+    public function transformHelpText(HelpText $helpText)
+    {
+        $helpText->getParagraph()->setAttribute('class', 'help-block');
+        return $helpText;
     }
 }

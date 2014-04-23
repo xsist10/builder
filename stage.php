@@ -12,19 +12,27 @@ use Builder\Element\Composite\InputField;
 
 use Builder\Element\Proxy\Tooltip;
 use Builder\Element\Proxy\Example;
+use Builder\Element\Proxy\HelpText;
 
+use Builder\Theme\Decorator\ChainDecorator;
 use Builder\Theme\Decorator\BootstrapThree;
+use Builder\Theme\Decorator\ProxyDecorator;
 
 $form = new Form;
 
+// Password field
 $password = new InputField('Password Label', 'password-field', new Password);
-$password->getHelpText()->nest(new Literal('Some help text'));
 $password = new Tooltip($password);
 $password->setTooltipText('Easy wrapped.');
+$password = new HelpText($password);
+$password->setHelpText('Help password');
 
+// Submit button
 $submit = new Submit('Submit Form');
-$tooltip = new Tooltip(new Example($submit));
+$tooltip = new Tooltip($submit);
 $tooltip->setTooltipText('Tooltip text that wraps an object.');
+$tooltip = new HelpText($tooltip);
+$tooltip->setHelpText('help text block');
 
 $form->nest(new InputField('Label', 'field', new Text));
 $form->nest($password);
@@ -37,12 +45,12 @@ echo '<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js
 echo '</head><body><div style="width: 500px; margin: 0px auto;">';
 
 // Render normal
-echo($form->render());
+//echo($form->render());
 echo "<br/><br/><br/>";
 
 // Decorate and render themed
 $decorator = new BootstrapThree();
-echo($decorator->decorate($form));
+echo($decorator->decorate($form)->render());
 
 echo '</div>';
 echo '<script>$("*[data-toggle=\'tooltip\']").tooltip();</script>';

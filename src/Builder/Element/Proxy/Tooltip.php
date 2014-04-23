@@ -1,34 +1,40 @@
 <?php
 namespace Builder\Element\Proxy;
 
-use Builder\Element\Element;
+use Builder\Element\ElementInterface;
 use Builder\Element\Proxy;
 
 class Tooltip extends Proxy
 {
-    private $tooltipText, $tooltipPosition = 'left';
+    private $tooltipText = '';
+    private $tooltipPosition = '';
+
+    public function __construct(ElementInterface $element)
+    {
+        parent::__construct($element);
+
+        // Defaults
+        $this->setAttribute('data-toggle', 'tooltip');
+        $this->setTooltipPosition('left');
+    }
 
     public function setTooltipText($text)
     {
-        $this->tooltipText = $text;
+        return $this->setAttribute('title', $text);
     }
 
     public function getTooltipText()
     {
-        return $this->tooltipText;
+        return $this->getAttribute('title');
+    }
+
+    public function setTooltipPosition($pos)
+    {
+        return $this->setAttribute('data-placement', $pos);
     }
 
     public function getTooltipPosition()
     {
-        return $this->tooltipPosition;
-    }
-
-    public function render()
-    {
-        $this->setAttribute('data-toggle', 'tooltip');
-        $this->setAttribute('title', $this->getTooltipText());
-        $this->setAttribute('data-placement', $this->getTooltipPosition());
-
-        return parent::render();
+        return $this->getAttribute('data-placement');
     }
 }

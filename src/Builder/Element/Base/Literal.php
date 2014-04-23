@@ -23,6 +23,11 @@ class Literal implements ElementInterface
         return $this->text;
     }
 
+    public function prepare()
+    {
+        return $this;
+    }
+
     public function render()
     {
         return $this->text;
