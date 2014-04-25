@@ -1,6 +1,7 @@
 <?php
 namespace Builder\Element\Proxy;
 
+use Builder\Element\Composite\InputField;
 use Builder\Element\Base\Paragraph;
 use Builder\Element\Base\Literal;
 use Builder\Element\Base\Div;
@@ -15,15 +16,14 @@ class HelpText extends Proxy
 
     public function __construct(ElementInterface $element)
     {
-        $this->paragraph = new Paragraph();
         parent::__construct($element);
+
+        $this->paragraph = new Paragraph();
+        $this->nestHelpText();
     }
 
-    public function setHelpText($text)
+    private function nestHelpText()
     {
-        // Create the paragraph
-        $this->paragraph->clear()->nest(new Literal($text));
-
         // Figure out if we are nested in a container
         if (!($this->resolveProxy() instanceof Container)) {
             // Replace the proxy element
@@ -33,7 +33,17 @@ class HelpText extends Proxy
 
         // Nest the paragraph
         $this->resolveProxy()->nest($this->paragraph);
+    }
 
+    public function supported()
+    {
+        return 'Builder\Element\Element';
+    }
+
+    public function setHelpText($text)
+    {
+        // Create the paragraph
+        $this->paragraph->clear()->nest(new Literal($text));
         return $this;
     }
 

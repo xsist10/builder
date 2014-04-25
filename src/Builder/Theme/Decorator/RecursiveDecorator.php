@@ -12,16 +12,14 @@ abstract class RecursiveDecorator implements DecoratorInterface
 
     private function invokeTransformer(ElementInterface $element)
     {
-        foreach ($this->callbacks as $namespace => $callback) {
+        foreach ($this->callbacks as $namespace => $calls) {
             if ($element instanceof $namespace) {
-                $element = call_user_func($callback, $element);
+                foreach ($calls as $key => $callback) {
+                    $element = call_user_func($callback, $element);
+                }
+
                 break;
             }
-        }
-
-        // Unwrap any proxies
-        if ($element instanceof Proxy) {
-            $element = $element->getElement();
         }
 
         return $element;
@@ -38,6 +36,10 @@ abstract class RecursiveDecorator implements DecoratorInterface
             }
 
             $element = $this->invokeTransformer($element->setNested($temp));
+
+        } elseif ($element instanceof Proxy) {
+            $element = $this->invokeTransformer($element);
+            $element = $this->recurse($element->getElement());
         } else {
 
             // Do infinite recursion until no objects are unwrapped anymore
@@ -54,7 +56,11 @@ abstract class RecursiveDecorator implements DecoratorInterface
 
     public function transform($namespace, $callback)
     {
-        $this->callbacks[$namespace] = $callback;
+        if (!isset($this->callbacks[$namespace])) {
+            $this->callbacks[$namespace] = array();
+        }
+
+        $this->callbacks[$namespace][] = $callback;
         return $this;
     }
 

@@ -19,10 +19,9 @@ class Label extends Proxy
         parent::__construct($element);
     }
 
-    public function supported(ElementInterface $element)
+    public function supported()
     {
-        // Support anything??
-        return true;
+        return 'Builder\Element\ElementInterface';
     }
 
     public function setLabelText($text)

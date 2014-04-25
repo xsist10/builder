@@ -5,9 +5,22 @@ abstract class Container extends Element implements ContainerInterface
 {
     private $nested = array();
 
+    public function nestUnshift(ElementInterface $element)
+    {
+        $this->nestAt(0, $element);
+        return $this;
+    }
+
     public function nest(ElementInterface $element)
     {
-        $this->nested[] = $element;
+        $this->nestAt(count($this->nested), $element);
+        return $this;
+    }
+
+    public function nestAt($index, ElementInterface $element)
+    {
+        array_splice($this->nested, $index, 0, array($element));
+        $element->setParent($this);
         return $this;
     }
 
@@ -22,9 +35,27 @@ abstract class Container extends Element implements ContainerInterface
         return $this;
     }
 
+    public function remove(ElementInterface $element)
+    {
+        foreach ($this->nested as $key => $item) {
+            if ($item == $element) {
+                unset($this->nested[$key]);
+                if ($element->getParent() == $this) {
+                    $element->unlink();
+                }
+                return $key;
+            }
+        }
+
+        return false;
+    }
+
     public function clear()
     {
-        $this->nested = array();
+        foreach ($this->nested as $element) {
+            $this->remove($element);
+        }
+
         return $this;
     }
 

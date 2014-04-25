@@ -1,5 +1,5 @@
 <?php
-namespace Builder\Theme\Decorator;
+namespace Builder\Theme\Decorator\BootstrapThree;
 
 use Builder\Theme\Decorator\RecursiveDecorator;
 use Builder\Element\Base\Label;
@@ -12,7 +12,7 @@ use Builder\Element\Composite\InputField;
 use Builder\Element\Proxy\Example;
 use Builder\Element\Proxy\HelpText;
 
-class BootstrapThree extends RecursiveDecorator
+class Base extends RecursiveDecorator
 {
     public function __construct()
     {
@@ -37,21 +37,37 @@ class BootstrapThree extends RecursiveDecorator
 
     public function transformInputField(InputField $textField)
     {
-        $textField
-            ->getInputText()
-            ->appendAttribute('class', 'form-control');
-
+        // Create a container div (group)
         $div = new Div();
-        $div->transferAttributes($textField)
-            ->appendAttribute('class', 'form-group')
-            ->nest($textField);
+        $div->transferAttributes($textField);
+
+        $input = $textField->getInputText();
+        $label = $textField->getLabel();
+
+        // Only add form-control to non-checkboxes
+        switch (true) {
+            case $input instanceof \Builder\Element\Base\Input\Checkbox:
+                $div->appendAttribute('class', 'checkbox');
+                $label->nestUnshift($input);
+                $div->nest($textField->clear()->nest($label));
+                return $div;
+                break;
+            case $input instanceof \Builder\Element\Base\Input\File:
+                break;
+            default:
+                $input->appendAttribute('class', 'form-control');
+                break;
+        }
+
+        $div->appendAttribute('class', 'form-group');
+        $div->nest($textField);
 
         return $div;
     }
 
     public function transformButton(Button $button)
     {
-        $button->appendAttribute('class', 'btn btn-primary');
+        $button->appendAttribute('class', 'btn btn-default');
         return $button;
     }
 

@@ -1,9 +1,9 @@
 <?php
 namespace Builder\Element\Base;
 
-use Builder\Element\ElementInterface;
+use Builder\Element\Element;
 
-class Literal implements ElementInterface
+class Literal extends Element
 {
     private $text;
 
@@ -21,11 +21,6 @@ class Literal implements ElementInterface
     public function getText()
     {
         return $this->text;
-    }
-
-    public function prepare()
-    {
-        return $this;
     }
 
     public function render()

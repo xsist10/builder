@@ -1,10 +1,13 @@
 <?php
 namespace Builder\Element\Composite;
 
+use Builder\Element\PhantomContainer;
 use Builder\Element\Base\Div;
 use Builder\Element\Base\Label;
 use Builder\Element\Base\Input;
 use Builder\Element\Base\Paragraph;
+
+use Builder\Element\ElementInterface;
 
 class InputField extends Div
 {
